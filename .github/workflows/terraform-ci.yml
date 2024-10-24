@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - dev
-      
+
     paths:
       - "**"
 
@@ -19,46 +19,33 @@ jobs:
     environment: terraform-ci
 
     steps:
-      # Step 1: Checkout repository
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Ensure all files are checked out
+          fetch-depth: 0
 
-      # Debugging: Print the current working directory
-      - name: Print current directory
-        run: pwd
-
-      # Debugging: List all files
-      - name: List files
-        run: ls -R
-
-      # Step 2: Authenticate with Google Cloud
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.service_account_key }}
 
-      # Step 3: Set up Google Cloud SDK
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: "gke-demo-anthos-project"
 
-      # Step 4: Install Terraform
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.9.8"
 
-      # Step 5: Initialize Terraform
       - name: Terraform Init
         run: |
-          cd ${{ github.workspace }}/gcp-automations/Terraform/gcp-virtual-private-cloud
-          terraform init
+          terraform init -chdir=${{ github.workspace }}/${{ env.directory }}
 
-      # Step 6: Run Terraform Plan
       - name: Terraform Plan
         run: |
-          cd ${{ github.workspace }}/gcp-automations/Terraform/gcp-virtual-private-cloud
-          terraform plan
+          terraform plan -chdir=${{ github.workspace }}/${{ env.directory }}
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.terraform-ci }}
