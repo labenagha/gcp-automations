@@ -6,8 +6,9 @@ on:
       - main
       - dev
     paths:
-      - "gcp-automations/Terraform/**"
-      - "terraform-ci.yml"
+      - "**"
+      # - "gcp-automations/Terraform/**"
+      # - "terraform-ci.yml"
 
 env:
   directory: "gcp-automations/Terraform/gcp-virtual-private-cloud"
