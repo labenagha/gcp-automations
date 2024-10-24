@@ -1,0 +1,41 @@
+name: terraform-ci
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "gcp-automations/Terraform/gcp-virtual-private-cloud/**"
+      - "terraform-ci.yml"
+
+env:
+  directory_vpc: "gcp-automations/Terraform/gcp-virtual-private-cloud"
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    environment: terraform-ci
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: "gke-demo-anthos-project"           
+          service_account_key: ${{ secrets.service_account_key }}
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: |
+          cd ${{ env.directory_vpc }} && terraform init
+
+      - name: Terraform Plan
+        run: |
+          cd ${{ env.directory_vpc }} && terraform plan
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.terraform-ci }}
