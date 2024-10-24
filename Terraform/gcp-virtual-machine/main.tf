@@ -5,7 +5,7 @@ module "shared_provider" {
 resource "google_compute_instance" "ubuntu_instance" {
   name                    = "gke-server1"
   machine_type            = "n1-standard-1"
-  zone                    = "us-east1-a"
+  zone                    = "us-central1-a"
   tags                    = ["ssh-allowed"]
 
   metadata_startup_script = <<-EOT
@@ -18,9 +18,6 @@ resource "google_compute_instance" "ubuntu_instance" {
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      labels = {
-        my_label = "value"
-      }
     }
   }
 
