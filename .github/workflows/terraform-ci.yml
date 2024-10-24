@@ -41,7 +41,7 @@ jobs:
         with:
           terraform_version: "1.9.8"
 
-      - name: Terraform Init
+      - name: Terraform Init for "${{ env.vpc_directory }}"
         run: |
           terraform -chdir=${{ env.vpc_directory }} init
 
@@ -49,6 +49,10 @@ jobs:
         run: |
           terraform -chdir=${{ env.vpc_directory }} plan
 
+      - name: Terraform Init for "${{ env.vm_directory }}"
+        run: |
+          sleep 60 && terraform -chdir=${{ env.vpc_directory }} init
+
       - name: Terraform Plan for "${{ env.vm_directory }}"
         run: |
-          terraform -chdir=${{ env.vm_directory }} plan
+          sleep 60 && terraform -chdir=${{ env.vm_directory }} plan
