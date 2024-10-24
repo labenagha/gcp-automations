@@ -51,7 +51,7 @@ jobs:
 
       - name: Terraform Init for "${{ env.vm_directory }}"
         run: |
-          sleep 30 && terraform -backend-config="backend.tf" -chdir=${{ env.vm_directory }} init -reconfigure
+          sleep 30 && terraform -chdir=${{ env.vm_directory }} init -backend-config="backend.tf" -reconfigure
 
       - name: Terraform Plan for "${{ env.vm_directory }}"
         run: |
