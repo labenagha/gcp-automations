@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
     paths:
       - "gcp-automations/Terraform/gcp-virtual-private-cloud/**"
       - "terraform-ci.yml"
