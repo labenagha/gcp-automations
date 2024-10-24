@@ -4,12 +4,13 @@ on:
   push:
     branches:
       - main
+      - dev
     paths:
-      - "gcp-automations/Terraform/gcp-virtual-private-cloud/**"
+      - "gcp-automations/Terraform/**"
       - "terraform-ci.yml"
 
 env:
-  directory_vpc: "gcp-automations/Terraform/gcp-virtual-private-cloud"
+  directory: "gcp-automations/Terraform/gcp-virtual-private-cloud"
 
 jobs:
   terraform-plan:
@@ -32,10 +33,10 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd ${{ env.directory_vpc }} && terraform init
+          cd ${{ env.directory }} && terraform init
 
       - name: Terraform Plan
         run: |
-          cd ${{ env.directory_vpc }} && terraform plan
+          cd ${{ env.directory }} && terraform plan
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.terraform-ci }}
