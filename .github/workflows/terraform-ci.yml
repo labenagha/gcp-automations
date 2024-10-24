@@ -9,7 +9,7 @@ on:
       - "**"
 
 env:
-  directory: "gcp-automations/Terraform/gcp-virtual-private-cloud"
+  directory: "./Terraform/gcp-virtual-private-cloud"
 
 jobs:
   terraform-plan:
