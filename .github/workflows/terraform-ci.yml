@@ -7,8 +7,6 @@ on:
       - dev
     paths:
       - "**"
-      # - "gcp-automations/Terraform/**"
-      # - "terraform-ci.yml"
 
 env:
   directory: "gcp-automations/Terraform/gcp-virtual-private-cloud"
@@ -22,11 +20,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Checkout the entire repository
+
+      # Debug steps to check the current directory and list files
+      - name: Print current directory
+        run: pwd
+
+      - name: List files
+        run: ls -R
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          project_id: "gke-demo-anthos-project"           
+          project_id: "gke-demo-anthos-project"
           service_account_key: ${{ secrets.service_account_key }}
 
       - name: Install Terraform
@@ -34,10 +41,10 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd ${{ env.directory }} && terraform init
+          terraform init -chdir=${{ github.workspace }}/gcp-automations/Terraform/gcp-virtual-private-cloud
 
       - name: Terraform Plan
         run: |
-          cd ${{ env.directory }} && terraform plan
+          terraform plan -chdir=${{ github.workspace }}/gcp-automations/Terraform/gcp-virtual-private-cloud
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.terraform-ci }}
