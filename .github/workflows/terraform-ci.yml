@@ -9,6 +9,7 @@ on:
 
 env:
   vpc_directory: "./Terraform/gcp-virtual-private-cloud"
+  vm_directory: "./Terraform/gcp-virtual-machine"
 
 jobs:
   terraform-plan:
@@ -44,6 +45,10 @@ jobs:
         run: |
           terraform -chdir=${{ env.vpc_directory }} init
 
-      - name: Terraform Plan
+      - name: Terraform Plan for "${{ env.vpc_directory }}"
         run: |
           terraform -chdir=${{ env.vpc_directory }} plan
+
+      - name: Terraform Plan for "${{ env.vm_directory }}"
+        run: |
+          terraform -chdir=${{ env.vm_directory }} plan
