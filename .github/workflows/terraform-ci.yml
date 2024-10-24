@@ -8,6 +8,7 @@ on:
       - "**"
 
 env:
+  vm_directory: "./Terraform/gcp-virtual-machine"
   vpc_directory: "./Terraform/gcp-virtual-private-cloud"
 
 jobs:
@@ -40,10 +41,18 @@ jobs:
         with:
           terraform_version: "1.9.8"
 
-      - name: Terraform Init
+      - name: Terraform Init for "${{ env.vpc_directory }}"
         run: |
           terraform -chdir=${{ env.vpc_directory }} init
 
-      - name: Terraform Plan
+      - name: Terraform Plan for "${{ env.vpc_directory }}"
         run: |
           terraform -chdir=${{ env.vpc_directory }} plan
+
+      - name: Terraform Init for "${{ env.vm_directory }}"
+        run: |
+          sleep 30 && terraform -chdir=${{ env.vm_directory }} init
+
+      - name: Terraform Plan for "${{ env.vm_directory }}"
+        run: |
+          terraform -chdir=${{ env.vm_directory }} plan

@@ -50,6 +50,17 @@ resource "google_compute_firewall" "allow_ssh" {
     protocol = "tcp"
     ports    = ["22"]
   }
+
+  target_tags = ["ssh-allowed"]
 }
 
-
+resource "google_compute_firewall" "allow-egress-internet" {
+  name      = "allow-egress-internet"
+  network   = google_compute_network.vpc_network.name
+  direction = "EGRESS"
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+  destination_ranges = ["0.0.0.0/0"]
+}
