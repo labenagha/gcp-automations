@@ -8,8 +8,8 @@ on:
       - "**"
 
 env:
-  vpc_directory: "./Terraform/gcp-virtual-private-cloud"
   vm_directory: "./Terraform/gcp-virtual-machine"
+  vpc_directory: "./Terraform/gcp-virtual-private-cloud"
 
 jobs:
   terraform-plan:
@@ -55,4 +55,4 @@ jobs:
 
       - name: Terraform Plan for "${{ env.vm_directory }}"
         run: |
-          sleep 30 && terraform -chdir=${{ env.vm_directory }} plan
+          terraform -chdir=${{ env.vm_directory }} plan

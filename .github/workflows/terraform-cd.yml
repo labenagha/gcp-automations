@@ -8,13 +8,14 @@ on:
       - "**"
 
 env:
+  vm_directory: "./Terraform/gcp-virtual-machine"
   vpc_directory: "./Terraform/gcp-virtual-private-cloud"
 
 jobs:
   terraform-apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
-    environment: terraform-ci
+    environment: terraform-cd
 
     steps:
       - name: Checkout repository
@@ -37,10 +38,18 @@ jobs:
         with:
           terraform_version: "1.9.8"
 
-      - name: Terraform Init
+      - name: Terraform Init for "${{ env.vpc_directory }}"
         run: |
           terraform -chdir=${{ env.vpc_directory }} init
 
-      - name: Terraform Apply
+      - name: Terraform Init for "${{ env.vm_directory }}"
+        run: |
+          sleep 10 && terraform -chdir=${{ env.vm_directory }} init
+
+      - name: Terraform Apply for "${{ env.vpc_directory }}"
         run: |
           terraform -chdir=${{ env.vpc_directory }} apply -auto-approve
+
+      - name: Terraform Apply for "${{ env.vm_directory }}"
+        run: |
+          sleep 30 && terraform -chdir=${{ env.vm_directory }} apply -auto-approve
