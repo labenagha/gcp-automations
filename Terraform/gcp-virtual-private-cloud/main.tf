@@ -41,16 +41,15 @@ resource "google_compute_firewall" "allow_internal" {
 }
 
 resource "google_compute_firewall" "allow_ssh" {
-  project = "gke-demo-anthos-project"
-  name    = "allow-ssh"
-  network = google_compute_network.vpc_network.id
+  project       = "gke-demo-anthos-project"
+  name          = "allow-ssh"
+  source_ranges = ["0.0.0.0/0"]
+  network       = google_compute_network.vpc_network.id
 
   allow {
     protocol = "tcp"
     ports    = ["22"]
   }
-
-  source_ranges = ["0.0.0.0/0"]
 }
 
 
