@@ -43,7 +43,7 @@ jobs:
 
       - name: Terraform Init for "${{ env.vpc_directory }}"
         run: |
-          terraform -chdir=${{ env.vpc_directory }} init
+          terraform -chdir=${{ env.vpc_directory }} init -backend-config="backend.hcl" -reconfigure
 
       - name: Terraform Plan for "${{ env.vpc_directory }}"
         run: |
@@ -51,7 +51,7 @@ jobs:
 
       - name: Terraform Init for "${{ env.vm_directory }}"
         run: |
-          sleep 30 && terraform -chdir=${{ env.vm_directory }} init
+          sleep 30 && terraform -chdir=${{ env.vm_directory }} init -backend-config="backend.hcl" -reconfigure
 
       - name: Terraform Plan for "${{ env.vm_directory }}"
         run: |
