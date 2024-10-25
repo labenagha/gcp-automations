@@ -57,3 +57,4 @@ jobs:
         run: |
           terraform -chdir=${{ env.vm_directory }} plan
         continue-on-error: true
+        
